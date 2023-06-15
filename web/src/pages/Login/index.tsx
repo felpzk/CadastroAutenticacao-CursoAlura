@@ -5,13 +5,6 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import logo from './Logo.png'
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`
-
 const Imagem = styled.img`
   padding: 2em 0;
   width: 15%;
@@ -58,7 +51,7 @@ export function Login() {
   const [senha, setSenha] = useState('');
 
   return (
-    <Container>
+    <>
       <Imagem src={logo} alt="Logo da Voll" />
       <Titulo>Faça login em sua conta</Titulo>
       <Formulario>
@@ -84,6 +77,6 @@ export function Login() {
           Faça seu cadastro!
         </LinkCustomizado>
       </ParagrafoCadastro>
-    </Container>
+    </>
   )
 }
