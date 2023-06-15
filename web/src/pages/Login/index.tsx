@@ -2,8 +2,11 @@ import { useState } from "react";
 import { CampoDigitacao } from "../../components/CampoDigitacao";
 import Botao from "../../components/Botao";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from './Logo.png'
+import { ILogin } from "../../types/ILogin";
+import { usePost } from "../../usePost";
+import { autenticaStore } from "../../stores/autentica.store";
 
 const Imagem = styled.img`
   padding: 2em 0;
@@ -50,11 +53,33 @@ export function Login() {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
 
+  const { cadastrarDados, erro, sucesso, resposta} = usePost()
+
+  const navigate = useNavigate()
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    const usuario: ILogin = {
+      email: email,
+      senha: senha
+    }
+
+    try {
+      cadastrarDados({ url: 'auth/login', dados: usuario})
+      autenticaStore.login({ email: email, token: resposta })
+      resposta && navigate('/dashboard')
+    }
+    catch (erro) {
+      erro && alert('Nao foi possivel fazer o login')
+    }
+  }
+
   return (
     <>
       <Imagem src={logo} alt="Logo da Voll" />
       <Titulo>Faça login em sua conta</Titulo>
-      <Formulario>
+      <Formulario onSubmit={handleLogin}>
         <CampoDigitacao
           tipo="email"
           label="Email"
